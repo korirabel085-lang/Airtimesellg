@@ -11,7 +11,7 @@ app.use(
   cors({
     origin: [
       "https://starlit-squirrel-826c31.netlify.app",
-      "https://sweet-crisp-2fef37.netlify.app"
+      "https://sweet-crisp-2fef37.netlify.app",
     ],
   })
 );
@@ -19,6 +19,11 @@ app.use(
 // Hardcoded API credentials (remove later)
 const consumerKey = "1889e51713b700048eb98fd58cb167a32d3";
 const consumerSecret = "mgwITZ2PxOw2tYgeWK9a188mGSzo";
+
+// Build the Base64 Authorization header
+const authHeader =
+  "Basic " +
+  Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
 
 // Route: Buy Airtime
 app.post("/buy-airtime", async (req, res) => {
@@ -29,9 +34,9 @@ app.post("/buy-airtime", async (req, res) => {
   }
 
   try {
-    // Send request to airtimesellg API
+    // Send request to Statum/AirtimeSell API
     const response = await axios.post(
-      "https://airtimesellg.onrender.com/api/airtime",
+      "https://airtimesellg.onrender.com/api/airtime", // confirm endpoint
       {
         phoneNumber: phone,
         amount: amount,
@@ -39,21 +44,22 @@ app.post("/buy-airtime", async (req, res) => {
       {
         headers: {
           "Content-Type": "application/json",
-          consumerKey: consumerKey,
-          consumerSecret: consumerSecret,
+          Authorization: authHeader, // ✅ Proper Basic Auth
         },
       }
     );
+
+    console.log("AirtimeSell response:", response.data);
 
     return res.json({
       message: "STK push sent successfully",
       data: response.data,
     });
   } catch (err) {
-    console.error("API Error:", err.response ? err.response.data : err.message);
+    console.error("API Error:", err.response?.data || err.message);
     return res.status(500).json({
       error: "Failed to process airtime purchase",
-      details: err.response ? err.response.data : err.message,
+      details: err.response?.data || err.message,
     });
   }
 });
