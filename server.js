@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-app.use(cors({ origin: "https://unique-pudding-c0da0c.netlify.app" })); // your frontend
+app.use(cors({ origin: "https://stupendous-tapioca-9986c7.netlify.app" })); // your frontend
 app.use(bodyParser.json());
 
 const STATUM_KEY = "18826dcf302ed924a468d6f3f69c2edf713";
