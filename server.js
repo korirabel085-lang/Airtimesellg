@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Allow only your frontend
 app.use(cors({
-  origin: "https://swiftloanfinance.onrender.com"
+  origin: "https://starlit-squirrel-826c31.netlify.app"
 }));
 
 // 1️⃣ User initiates airtime purchase
