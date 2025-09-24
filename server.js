@@ -12,8 +12,8 @@ app.use(cors({
 }));
 
 // 🔑 Hardcoded credentials (replace later with env vars for security)
-const STATUM_KEY = "18826dcf302ed924a468d6f3f69c2edf713";
-const STATUM_SECRET = "GMRFbrLBTeXyuY4tsPtk188qBUxL";
+const STATUM_KEY = "188e5e5557f41f04f0680792401faf0f225";
+const STATUM_SECRET = "Ogy9f3pWagqafBHVBZqC188NVHbQ";
 
 // Utility: generate auth header
 function getAuthHeader() {
