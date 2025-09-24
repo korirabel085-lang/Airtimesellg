@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Allow frontend (Netlify or your domain)
 app.use(cors({
-  origin: "https://swiftloanapp-ke.onrender.com" // 🔧 change later if needed
+  origin: "https://fancy-granita-e43bc3.netlify.app" // 🔧 change later if needed
 }));
 
 // 🔑 Hardcoded credentials (replace later with env vars for security)
