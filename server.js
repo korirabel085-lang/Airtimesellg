@@ -8,7 +8,7 @@ app.use(express.json());
 // Allow only your frontend
 app.use(
   cors({
-    origin: "https://dapper-sorbet-e4508e.netlify.app", // your Netlify frontend
+    origin: "https://fancy-granita-e43bc3.netlify.app", // your Netlify frontend
   })
 );
 
