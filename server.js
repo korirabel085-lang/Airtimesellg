@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Allow requests ONLY from your frontend domain
 app.use(cors({
-  origin: "https://swiftloanapp-ke.onrender.com"
+  origin: "https://dapper-sorbet-e4508e.netlify.app"
 }));
 
 // ✅ Hardcoded API credentials (REMOVE or put in env vars later)
