@@ -2,7 +2,7 @@
   "name": "statum-airtime-backend",
   "version": "1.0.0",
   "main": "server.js",
-  "type": "module",   // 👈 change this
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
