@@ -19,8 +19,8 @@ app.use(cors({
 }));
 
 // ==== HARDCODED SENSITIVE VALUES (REMOVE / MOVE TO ENV LATER) ====
-const CONSUMER_KEY = "18826dcf302ed924a468d6f3f69c2edf713";
-const CONSUMER_SECRET = "GMRFbrLBTeXyuY4tsPtk188qBUxL";
+const CONSUMER_KEY = "18869434d4774f940279783265ee44b565a";
+const CONSUMER_SECRET = "DmSzO88gNJjJXQZYCio5188ldIrL";
 
 // Admin password (hardcoded per your request)
 const ADMIN_PASSWORD = "3462Abel@#";
