@@ -8,13 +8,13 @@ app.use(express.json());
 // Allow only your frontend
 app.use(
   cors({
-    origin: "https://dapper-sorbet-e4508e.netlify.app", // your Netlify URL
+    origin: "https://dapper-sorbet-e4508e.netlify.app", // your Netlify frontend
   })
 );
 
-// Statum credentials (hardcoded for now)
-const consumerKey = "1881a4fde7210d4415992b6bc4675c0757a";
-const consumerSecret = "5M6LQuwucAT09Wzb7R0b188MTgIn";
+// ✅ Use your latest Statum API credentials
+const consumerKey = "1885854e779f2f145c9bdd460655a6e7404";
+const consumerSecret = "j2GZreQ233crWAfcbl2I188M2OEm";
 
 // Base64 encode key:secret
 const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
