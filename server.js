@@ -1,76 +1,103 @@
-const express = require("express");
-const fetch = require("node-fetch");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+import axios from "axios";
+
+// Hardcoded keys (replace later)
+const consumerKey = "1889e51713b700048eb98fd58cb167a32d3";
+const consumerSecret = "mgwITZ2PxOw2tYgeWK9a188mGSzo";
+const authHeader = "Basic " + Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
+
+// Statum endpoints
+const MPESA_URL = "https://api.statum.co.ke/api/v2/mpesa/online";
+const AIRTIME_URL = "https://api.statum.co.ke/api/v2/airtime";
 
 const app = express();
-app.use(cors({ origin: "https://stupendous-tapioca-9986c7.netlify.app" })); // your frontend
-app.use(bodyParser.json());
+app.use(express.json());
 
-const STATUM_KEY = "18826dcf302ed924a468d6f3f69c2edf713";
-const STATUM_SECRET = "GMRFbrLBTeXyuY4tsPtk188qBUxL";
-const AUTH_HEADER = "Basic " + Buffer.from(`${STATUM_KEY}:${STATUM_SECRET}`).toString("base64");
+// Allow only your frontend
+app.use(cors({
+  origin: "https://swiftloanfinance.onrender.com"
+}));
 
-// 🔹 Step 1: Start STK Push
-app.post("/pay", async (req, res) => {
-  const { phone, amount } = req.body;
-
+// 1️⃣ User initiates airtime purchase
+app.post("/buy-airtime", async (req, res) => {
   try {
-    const response = await fetch("https://api.statum.co.ke/api/v2/mpesa-online", {
-      method: "POST",
-      headers: {
-        "Authorization": AUTH_HEADER,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    const { phone, amount } = req.body;
+
+    if (!phone || !amount) {
+      return res.status(400).json({ error: "Phone and amount are required" });
+    }
+
+    // Trigger STK Push via Statum
+    const response = await axios.post(
+      MPESA_URL,
+      {
         phone_number: phone,
-        amount: amount,
-        short_code: "YOUR_PAYBILL", // from Statum dashboard
-        account_reference: "AIRTIME_TOPUP"
-      })
+        short_code: "709345", // Replace with your shortcode from Statum
+        amount: String(amount),
+        bill_ref_number: "AIRTIME_PURCHASE"
+      },
+      {
+        headers: {
+          Authorization: authHeader,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    return res.json({
+      message: "STK Push initiated. Complete payment on phone.",
+      data: response.data
     });
 
-    const data = await response.json();
-    res.json(data);
+  } catch (error) {
+    console.error("STK Error:", error.response?.data || error.message);
+    res.status(500).json({ error: "Failed to initiate STK push" });
+  }
+});
+
+// 2️⃣ Statum sends payment callback here
+app.post("/mpesa-callback", async (req, res) => {
+  try {
+    const callbackData = req.body;
+    console.log("📩 STK Callback:", callbackData);
+
+    if (callbackData.result_code === "200") {
+      const { phone_number, amount } = callbackData;
+
+      // Trigger Airtime Top-up
+      const airtimeRes = await axios.post(
+        AIRTIME_URL,
+        {
+          phone_number,
+          amount: String(amount)
+        },
+        {
+          headers: {
+            Authorization: authHeader,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      console.log("✅ Airtime Response:", airtimeRes.data);
+    }
+
+    // Always acknowledge callback
+    res.json({ status_code: 200, description: "Callback received" });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Payment request failed" });
+    console.error("Callback error:", error.response?.data || error.message);
+    res.status(500).json({ error: "Failed to process callback" });
   }
 });
 
-// 🔹 Step 2: Handle STK Push Callback
-app.post("/stk-callback", async (req, res) => {
-  console.log("STK Callback:", req.body);
-
-  const { result_code, phone_number, amount } = req.body;
-
-  if (result_code === "0") {
-    // Payment successful → Send airtime
-    try {
-      const airtimeResponse = await fetch("https://api.statum.co.ke/api/v2/airtime", {
-        method: "POST",
-        headers: {
-          "Authorization": AUTH_HEADER,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          phone_number,
-          amount,
-          country_code: "KE" // Kenya
-        })
-      });
-
-      const airtimeData = await airtimeResponse.json();
-      console.log("Airtime Response:", airtimeData);
-
-    } catch (err) {
-      console.error("Airtime Error:", err);
-    }
-  }
-
-  res.json({ message: "Callback received" });
+// 3️⃣ Airtime delivery callback (optional)
+app.post("/airtime-callback", (req, res) => {
+  console.log("📲 Airtime Callback:", req.body);
+  res.json({ status_code: 200, description: "Airtime callback received" });
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
