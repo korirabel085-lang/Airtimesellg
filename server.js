@@ -10,7 +10,7 @@ app.use(express.json());
 
 // === CONFIGURATION ===
 // Allowed frontend origin (Netlify)
-const FRONTEND_ORIGIN = "https://unique-pudding-c0da0c.netlify.app";
+const FRONTEND_ORIGIN = "https://gilded-madeleine-a36766.netlify.app";
 // Your Render backend URL (for reference)
 const BACKEND_URL = "https://airtimesellg.onrender.com";
 
