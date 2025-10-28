@@ -35,7 +35,7 @@ function logToFile(filename, data) {
   fs.appendFileSync(filename, JSON.stringify(logEntry) + "\n", "utf8");
 }
 
-// === STATUM CALLBACKS ===
+/// === STATUM CALLBACKS ===
 app.post("/c2b/validate", (req, res) => {
   console.log("📩 C2B Validation:", req.body);
   logToFile("c2b_validation.log", req.body);
