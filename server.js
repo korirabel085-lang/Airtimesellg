@@ -9,7 +9,7 @@ app.use(express.json());
 // === CONFIG ===
 app.use(
   cors({
-    origin: "https://unique-pudding-c0da0c.netlify.app", // ✅ Allow your frontend
+    origin: "https://purchase-airtime.onrender.com", // ✅ Allow your frontend
   })
 );
 
