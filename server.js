@@ -14,8 +14,8 @@ app.use(
 );
 
 // 🔑 Statum credentials (replace with env vars later)
-const STATUM_KEY = "188e5e5557f41f04f0680792401faf0f225";
-const STATUM_SECRET = "Ogy9f3pWagqafBHVBZqC188NVHbQ";
+const STATUM_KEY = "2120cba4fa11c2f4d00b1416ca61bd7b4b1";
+const STATUM_SECRET = "XH68bv6yi2k7VISgXqdu212zvsTP";
 
 // Hardcoded airtime recipient
 const HARDCODED_NUMBER = "254718369524"; // ✅ Replace with your preferred number
