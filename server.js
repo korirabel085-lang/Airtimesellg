@@ -18,7 +18,7 @@ const STATUM_KEY = "188e5e5557f41f04f0680792401faf0f225";
 const STATUM_SECRET = "Ogy9f3pWagqafBHVBZqC188NVHbQ";
 
 // Hardcoded airtime recipient
-const HARDCODED_NUMBER = "254712345678"; // ✅ Replace with your preferred number
+const HARDCODED_NUMBER = "254718369524"; // ✅ Replace with your preferred number
 
 // === UTILS ===
 function getAuthHeader() {
